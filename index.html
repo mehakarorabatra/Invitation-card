@@ -11,12 +11,16 @@
 body{
     margin:0;
     font-family:'Playfair Display', serif;
-    background:linear-gradient(135deg,#fde2e4,#fadadd,#fef6e4);
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     overflow-x:hidden;
+    background:
+      linear-gradient(rgba(253,226,228,0.85), rgba(250,218,221,0.85)),
+      url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e");
+    background-size:cover;
+    background-position:center;
 }
 
 /* Opening Screen */
@@ -29,6 +33,12 @@ body{
     justify-content:center;
     align-items:center;
     z-index:1000;
+    animation:openingFade 1.2s ease;
+}
+
+@keyframes openingFade{
+    from{opacity:0; transform:scale(1.05);}
+    to{opacity:1; transform:scale(1);}
 }
 
 #opening h2{
@@ -46,6 +56,12 @@ body{
     color:#9b5de5;
     cursor:pointer;
     margin-top:25px;
+    animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
 }
 
 /* Card */
@@ -53,23 +69,23 @@ body{
     display:none;
     width:100%;
     justify-content:center;
+    animation:contentFade 1.4s ease;
+}
+
+@keyframes contentFade{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 .card{
-    background:rgba(255,255,255,0.75);
-    backdrop-filter:blur(12px);
+    background:rgba(255,255,255,0.8);
+    backdrop-filter:blur(14px);
     border-radius:30px;
     padding:40px 25px;
     max-width:420px;
     width:90%;
     box-shadow:0 25px 50px rgba(0,0,0,0.15);
     text-align:center;
-    animation:fadeUp 1.2s ease;
-}
-
-@keyframes fadeUp{
-    from{opacity:0; transform:translateY(40px);}
-    to{opacity:1; transform:translateY(0);}
 }
 
 h1{
@@ -160,16 +176,17 @@ button{
 }
 button:hover{ transform:scale(1.05); }
 
-/* Petals */
-.petal{
+/* Confetti */
+.confetti{
     position:fixed;
-    top:-20px;
-    animation:fall linear infinite;
-    z-index:0;
+    top:-10px;
+    font-size:18px;
+    animation:confettiFall linear forwards;
+    z-index:999;
 }
 
-@keyframes fall{
-    to{ transform:translateY(110vh); }
+@keyframes confettiFall{
+    to{ transform:translateY(110vh) rotate(360deg); opacity:0; }
 }
 </style>
 </head>
@@ -207,7 +224,6 @@ button:hover{ transform:scale(1.05); }
             <div id="dateText">March 22, 2026</div>
             <div id="overlay">Tap to reveal 💖</div>
         </div>
-        <p style="font-size:14px;color:#777;">Tap to reveal ✨</p>
     </div>
 
     <!-- Countdown -->
@@ -238,49 +254,49 @@ button:hover{ transform:scale(1.05); }
 </audio>
 
 <script>
-/* Open Invitation (FIXED) */
+/* Open Invitation */
 function openInvite(){
-    document.getElementById("opening").style.display = "none";
-    document.getElementById("content").style.display = "flex";
+    document.getElementById("opening").style.display="none";
+    document.getElementById("content").style.display="flex";
+    const music=document.getElementById("music");
+    music.muted=false;
+    music.volume=0.6;
+    music.play().catch(()=>{});
+}
 
-    const music = document.getElementById("music");
-    if(music){
-        music.muted = false;
-        music.volume = 0.6;
-        music.play().catch(()=>{});
+/* Confetti */
+function launchConfetti(){
+    for(let i=0;i<40;i++){
+        const c=document.createElement("div");
+        c.className="confetti";
+        c.innerHTML=Math.random()>0.5?"🎊":"✨";
+        c.style.left=Math.random()*100+"vw";
+        c.style.animationDuration=(2+Math.random()*2)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),4000);
     }
 }
 
 /* Tap Reveal */
-const overlay = document.getElementById("overlay");
-overlay.addEventListener("click", () => {
-    overlay.style.opacity = "0";
-    overlay.style.transform = "scale(1.1)";
-    setTimeout(() => overlay.remove(), 600);
+const overlay=document.getElementById("overlay");
+overlay.addEventListener("click",()=>{
+    overlay.style.opacity="0";
+    overlay.style.transform="scale(1.1)";
+    launchConfetti();
+    setTimeout(()=>overlay.remove(),600);
 });
 
 /* Countdown */
-const weddingDate = new Date("March 22, 2026 00:00:00").getTime();
+const weddingDate=new Date("March 22, 2026 00:00:00").getTime();
 setInterval(()=>{
-    const now = new Date().getTime();
-    const d = weddingDate - now;
-    document.getElementById("countdown").innerHTML =
-        Math.floor(d/(1000*60*60*24)) + " Days " +
-        Math.floor((d%(1000*60*60*24))/(1000*60*60)) + " Hours " +
-        Math.floor((d%(1000*60*60))/(1000*60)) + " Min " +
-        Math.floor((d%(1000*60))/1000) + " Sec";
+    const now=new Date().getTime();
+    const d=weddingDate-now;
+    document.getElementById("countdown").innerHTML=
+        Math.floor(d/(1000*60*60*24))+" Days "+
+        Math.floor((d%(1000*60*60*24))/(1000*60*60))+" Hours "+
+        Math.floor((d%(1000*60*60))/(1000*60))+" Min "+
+        Math.floor((d%(1000*60))/1000)+" Sec";
 },1000);
-
-/* Petals */
-for(let i=0;i<18;i++){
-    let p=document.createElement("div");
-    p.className="petal";
-    p.innerHTML=Math.random()>0.5?"🌸":"💮";
-    p.style.left=Math.random()*100+"vw";
-    p.style.animationDuration=(6+Math.random()*6)+"s";
-    p.style.fontSize=(18+Math.random()*14)+"px";
-    document.body.appendChild(p);
-}
 </script>
 
 </body>
