@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
 <style>
+/* ===== GLOSSY BACKGROUND ===== */
 body{
     margin:0;
     font-family:'Playfair Display', serif;
@@ -16,55 +17,71 @@ body{
     justify-content:center;
     align-items:center;
     overflow-x:hidden;
+
     background:
-      linear-gradient(rgba(253,226,228,0.85), rgba(250,218,221,0.85)),
-      url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e");
-    background-size:cover;
-    background-position:center;
+      radial-gradient(circle at top left, rgba(255,200,221,0.6), transparent 45%),
+      radial-gradient(circle at bottom right, rgba(155,93,229,0.45), transparent 50%),
+      linear-gradient(135deg,#fde2e4,#fbcfe8,#e0c3fc);
+
+    background-attachment:fixed;
 }
 
-/* Opening Screen */
+/* Soft floral texture overlay */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url("https://www.transparenttextures.com/patterns/flowers.png");
+    opacity:0.18;
+    pointer-events:none;
+}
+
+/* ===== OPENING SCREEN ===== */
 #opening{
     position:fixed;
     inset:0;
-    background:linear-gradient(to bottom,#cdb4db,#ffc8dd);
+    background:
+      linear-gradient(135deg,#cdb4db,#ffc8dd),
+      radial-gradient(circle at top,#fff5,transparent 60%);
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
     z-index:1000;
-    animation:openingFade 1.2s ease;
+    animation:openingFade 1.3s ease;
 }
 
 @keyframes openingFade{
-    from{opacity:0; transform:scale(1.05);}
+    from{opacity:0; transform:scale(1.08);}
     to{opacity:1; transform:scale(1);}
 }
 
 #opening h2{
     font-family:'Dancing Script', cursive;
-    font-size:42px;
+    font-size:44px;
     color:white;
+    text-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 
 #opening button{
-    padding:14px 30px;
+    padding:15px 34px;
     border:none;
-    border-radius:30px;
+    border-radius:40px;
     font-size:16px;
-    background:white;
+    background:linear-gradient(135deg,#fff,#f8edeb);
     color:#9b5de5;
     cursor:pointer;
-    margin-top:25px;
+    margin-top:28px;
     animation:pulse 1.8s infinite;
+    box-shadow:0 15px 30px rgba(0,0,0,0.25);
 }
 
 @keyframes pulse{
     0%,100%{transform:scale(1);}
-    50%{transform:scale(1.05);}
+    50%{transform:scale(1.08);}
 }
 
-/* Card */
+/* ===== CARD ===== */
 #content{
     display:none;
     width:100%;
@@ -73,31 +90,38 @@ body{
 }
 
 @keyframes contentFade{
-    from{opacity:0; transform:translateY(40px);}
+    from{opacity:0; transform:translateY(50px);}
     to{opacity:1; transform:translateY(0);}
 }
 
 .card{
-    background:rgba(255,255,255,0.8);
-    backdrop-filter:blur(14px);
-    border-radius:30px;
-    padding:40px 25px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,0.92),
+        rgba(255,255,255,0.78)
+    );
+    backdrop-filter:blur(18px);
+    border-radius:32px;
+    padding:42px 26px;
     max-width:420px;
     width:90%;
-    box-shadow:0 25px 50px rgba(0,0,0,0.15);
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.2),
+        inset 0 0 40px rgba(255,255,255,0.5);
     text-align:center;
 }
 
+/* ===== TEXT ===== */
 h1{
     font-family:'Dancing Script', cursive;
-    font-size:44px;
+    font-size:46px;
     color:#9b5de5;
 }
 
 .names{
     font-family:'Dancing Script', cursive;
     font-size:32px;
-    margin:20px 0;
+    margin:22px 0;
     color:#6d6875;
     line-height:1.4;
 }
@@ -105,20 +129,18 @@ h1{
 .divider{
     font-size:26px;
     color:#b5838d;
-    margin:15px 0 25px;
+    margin:18px 0 26px;
 }
 
-.section{
-    margin:35px 0;
-}
+.section{ margin:36px 0; }
 
-/* Tap Reveal */
+/* ===== TAP REVEAL ===== */
 #scratch-wrapper{
     position:relative;
     width:280px;
-    height:90px;
-    margin:20px auto;
-    border-radius:18px;
+    height:92px;
+    margin:22px auto;
+    border-radius:20px;
     overflow:hidden;
     background:linear-gradient(135deg,#fff,#f8edeb);
     border:2px dashed #e5989b;
@@ -151,36 +173,36 @@ h1{
     transition:opacity .6s ease, transform .6s ease;
 }
 
-/* Countdown */
+/* ===== COUNTDOWN ===== */
 #countdown{
     font-size:18px;
     color:#6d6875;
-    background:#fff;
-    padding:12px 18px;
-    border-radius:20px;
+    background:linear-gradient(135deg,#fff,#f8edeb);
+    padding:14px 22px;
+    border-radius:24px;
     display:inline-block;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    box-shadow:0 10px 22px rgba(0,0,0,0.12);
 }
 
-/* Buttons */
+/* ===== BUTTONS ===== */
 button{
-    padding:12px 26px;
+    padding:13px 28px;
     background:linear-gradient(135deg,#9b5de5,#f15bb5);
     color:white;
     border:none;
     border-radius:30px;
     font-size:15px;
     cursor:pointer;
-    box-shadow:0 10px 20px rgba(155,93,229,0.4);
+    box-shadow:0 12px 26px rgba(155,93,229,0.45);
     transition:transform .2s;
 }
 button:hover{ transform:scale(1.05); }
 
-/* Confetti */
+/* ===== CONFETTI ===== */
 .confetti{
     position:fixed;
     top:-10px;
-    font-size:18px;
+    font-size:20px;
     animation:confettiFall linear forwards;
     z-index:999;
 }
@@ -193,13 +215,13 @@ button:hover{ transform:scale(1.05); }
 
 <body>
 
-<!-- Opening -->
+<!-- OPENING -->
 <div id="opening">
     <h2>💖 Sarvika 💖</h2>
     <button onclick="openInvite()">Open Invitation 💍</button>
 </div>
 
-<!-- Invitation Card -->
+<!-- CARD -->
 <div id="content">
 <div class="card">
 
@@ -217,7 +239,6 @@ button:hover{ transform:scale(1.05); }
 
     <p>Together with their families,<br>invite you to celebrate their forever.</p>
 
-    <!-- Tap Reveal -->
     <div class="section">
         <h2>🎁 Save the Date</h2>
         <div id="scratch-wrapper">
@@ -226,13 +247,11 @@ button:hover{ transform:scale(1.05); }
         </div>
     </div>
 
-    <!-- Countdown -->
     <div class="section">
         <h2>⏳ Countdown</h2>
         <div id="countdown"></div>
     </div>
 
-    <!-- Venue -->
     <div class="section">
         <h2>📍 Venue</h2>
         <p>
@@ -250,21 +269,18 @@ button:hover{ transform:scale(1.05); }
 </div>
 
 <audio id="music" muted loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
 </audio>
 
 <script>
-/* Open Invitation */
 function openInvite(){
-    document.getElementById("opening").style.display="none";
-    document.getElementById("content").style.display="flex";
-    const music=document.getElementById("music");
+    opening.style.display="none";
+    content.style.display="flex";
     music.muted=false;
     music.volume=0.6;
     music.play().catch(()=>{});
 }
 
-/* Confetti */
 function launchConfetti(){
     for(let i=0;i<40;i++){
         const c=document.createElement("div");
@@ -277,8 +293,6 @@ function launchConfetti(){
     }
 }
 
-/* Tap Reveal */
-const overlay=document.getElementById("overlay");
 overlay.addEventListener("click",()=>{
     overlay.style.opacity="0";
     overlay.style.transform="scale(1.1)";
@@ -286,12 +300,10 @@ overlay.addEventListener("click",()=>{
     setTimeout(()=>overlay.remove(),600);
 });
 
-/* Countdown */
 const weddingDate=new Date("March 22, 2026 00:00:00").getTime();
 setInterval(()=>{
-    const now=new Date().getTime();
-    const d=weddingDate-now;
-    document.getElementById("countdown").innerHTML=
+    const d=weddingDate-new Date().getTime();
+    countdown.innerHTML=
         Math.floor(d/(1000*60*60*24))+" Days "+
         Math.floor((d%(1000*60*60*24))/(1000*60*60))+" Hours "+
         Math.floor((d%(1000*60*60))/(1000*60))+" Min "+
