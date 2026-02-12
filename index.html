@@ -11,17 +11,19 @@
 body{
     margin:0;
     font-family:'Playfair Display', serif;
-    background:linear-gradient(to bottom,#fff1f5,#fef6e4);
-    text-align:center;
+    background:linear-gradient(135deg,#fde2e4,#fadadd,#fef6e4);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     overflow-x:hidden;
 }
 
 /* Opening Screen */
 #opening{
     position:fixed;
-    width:100%;
-    height:100%;
-    background:linear-gradient(to bottom,#f8c8dc,#e0aaff);
+    inset:0;
+    background:linear-gradient(to bottom,#cdb4db,#ffc8dd);
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -31,55 +33,78 @@ body{
 
 #opening h2{
     font-family:'Dancing Script', cursive;
-    font-size:38px;
+    font-size:42px;
     color:white;
 }
 
 #opening button{
-    padding:12px 25px;
+    padding:14px 30px;
     border:none;
     border-radius:30px;
     font-size:16px;
     background:white;
-    color:#b5838d;
+    color:#9b5de5;
     cursor:pointer;
-    margin-top:20px;
+    margin-top:25px;
 }
 
-/* Main Content */
+/* Card */
 #content{
     display:none;
-    padding:30px;
-    position:relative;
-    z-index:2;
+    width:100%;
+    justify-content:center;
+}
+
+.card{
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(12px);
+    border-radius:30px;
+    padding:40px 25px;
+    max-width:420px;
+    width:90%;
+    box-shadow:0 25px 50px rgba(0,0,0,0.15);
+    text-align:center;
+    animation:fadeUp 1.2s ease;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 h1{
     font-family:'Dancing Script', cursive;
-    font-size:42px;
-    color:#b5838d;
+    font-size:44px;
+    color:#9b5de5;
 }
 
 .names{
-    font-size:28px;
+    font-family:'Dancing Script', cursive;
+    font-size:34px;
     margin:20px 0;
     color:#6d6875;
 }
 
+.divider{
+    font-size:26px;
+    color:#b5838d;
+    margin:15px 0 25px;
+}
+
 .section{
-    margin:50px 0;
+    margin:40px 0;
 }
 
 /* Scratch Card */
 #scratch-wrapper{
     position:relative;
-    width:300px;
-    height:100px;
+    width:280px;
+    height:90px;
     margin:20px auto;
-    border-radius:15px;
+    border-radius:18px;
     overflow:hidden;
-    background:#fff;
-    user-select:none;
+    background:linear-gradient(135deg,#fff,#f8edeb);
+    border:2px dashed #e5989b;
 }
 
 #dateText{
@@ -90,41 +115,48 @@ h1{
     justify-content:center;
     font-size:22px;
     font-weight:bold;
-    color:#b5838d;
+    color:#9b5de5;
     z-index:1;
 }
 
 #overlay{
     position:absolute;
     inset:0;
-    background:#c084fc;
+    background:linear-gradient(135deg,#cdb4db,#ffc8dd);
     z-index:2;
     cursor:pointer;
+    touch-action:none;
 }
 
 /* Countdown */
 #countdown{
     font-size:18px;
     color:#6d6875;
-    margin-top:10px;
+    background:#fff;
+    padding:12px 18px;
+    border-radius:20px;
+    display:inline-block;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
 }
 
 /* Buttons */
 button{
-    padding:10px 20px;
-    background:#b5838d;
+    padding:12px 26px;
+    background:linear-gradient(135deg,#9b5de5,#f15bb5);
     color:white;
     border:none;
-    border-radius:25px;
+    border-radius:30px;
     font-size:15px;
     cursor:pointer;
+    box-shadow:0 10px 20px rgba(155,93,229,0.4);
+    transition:transform .2s;
 }
+button:hover{ transform:scale(1.05); }
 
-/* Falling petals */
+/* Falling Petals */
 .petal{
     position:fixed;
     top:-20px;
-    font-size:20px;
     animation:fall linear infinite;
     z-index:0;
 }
@@ -143,27 +175,28 @@ button{
     <button onclick="openInvite()">Open Invitation 💍</button>
 </div>
 
-<!-- Content -->
+<!-- Invitation Card -->
 <div id="content">
+<div class="card">
 
     <h1>Wedding Invitation</h1>
 
     <div class="names">
-        Yashika Khurana <br> ❤️ <br> Sarvesh Arora
+        Yashika <br> ❤️ <br> Sarvesh 
     </div>
+
+    <div class="divider">❦</div>
 
     <p>Together with their families,<br>invite you to celebrate their forever.</p>
 
     <!-- Scratch Date -->
     <div class="section">
-        <h2>🎁 Reveal the Date</h2>
-
+        <h2>🎁 Save the Date</h2>
         <div id="scratch-wrapper">
             <div id="dateText">March 22, 2026</div>
             <div id="overlay"></div>
         </div>
-
-        <p style="font-size:14px;color:#777;">Scratch the box to reveal the date ✨</p>
+        <p style="font-size:14px;color:#777;">Scratch to reveal ✨</p>
     </div>
 
     <!-- Countdown -->
@@ -187,6 +220,7 @@ button{
     </div>
 
 </div>
+</div>
 
 <audio id="music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
 
@@ -194,73 +228,72 @@ button{
 /* Open Invite */
 function openInvite(){
     document.getElementById("opening").style.display="none";
-    document.getElementById("content").style.display="block";
+    document.getElementById("content").style.display="flex";
     document.getElementById("music").play();
 }
 
-/* Scratch Card */
-const overlay=document.getElementById("overlay");
-let isDrawing=false;
-let scratched=[];
+/* Smooth Scratch Logic */
+const overlay = document.getElementById("overlay");
+let drawing = false;
+let scratchCount = 0;
+
+overlay.addEventListener("pointerdown", e => {
+    drawing = true;
+    scratch(e);
+});
+overlay.addEventListener("pointermove", scratch);
+overlay.addEventListener("pointerup", () => drawing = false);
+overlay.addEventListener("pointerleave", () => drawing = false);
 
 function scratch(e){
-    if(!isDrawing) return;
-    e.preventDefault();
-    const rect=overlay.getBoundingClientRect();
-    const x=(e.clientX || e.touches[0].clientX)-rect.left;
-    const y=(e.clientY || e.touches[0].clientY)-rect.top;
+    if(!drawing) return;
 
-    const dot=document.createElement("div");
-    dot.style.position="absolute";
-    dot.style.width="30px";
-    dot.style.height="30px";
-    dot.style.borderRadius="50%";
-    dot.style.background="transparent";
-    dot.style.left=(x-15)+"px";
-    dot.style.top=(y-15)+"px";
-    dot.style.pointerEvents="none";
-    overlay.appendChild(dot);
-    scratched.push(dot);
+    const rect = overlay.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    if(scratched.length>60){
-        overlay.remove();
+    const hole = document.createElement("div");
+    hole.style.position = "absolute";
+    hole.style.width = "45px";
+    hole.style.height = "45px";
+    hole.style.borderRadius = "50%";
+    hole.style.left = (x - 22) + "px";
+    hole.style.top = (y - 22) + "px";
+    hole.style.background = "transparent";
+    hole.style.boxShadow = "0 0 0 9999px rgba(0,0,0,0)";
+    hole.style.pointerEvents = "none";
+
+    overlay.appendChild(hole);
+    scratchCount++;
+
+    if(scratchCount > 90){
+        overlay.style.transition = "opacity 0.6s ease";
+        overlay.style.opacity = "0";
+        setTimeout(() => overlay.remove(), 600);
     }
 }
 
-overlay.addEventListener("mousedown",()=>isDrawing=true);
-overlay.addEventListener("mouseup",()=>isDrawing=false);
-overlay.addEventListener("mouseleave",()=>isDrawing=false);
-overlay.addEventListener("mousemove",scratch);
-
-overlay.addEventListener("touchstart",()=>isDrawing=true);
-overlay.addEventListener("touchend",()=>isDrawing=false);
-overlay.addEventListener("touchmove",scratch);
-
 /* Countdown */
-const weddingDate=new Date("March 22, 2026 00:00:00").getTime();
-
+const weddingDate = new Date("March 22, 2026 00:00:00").getTime();
 setInterval(()=>{
-    const now=new Date().getTime();
-    const distance=weddingDate-now;
-
-    const days=Math.floor(distance/(1000*60*60*24));
-    const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-    const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
-    const seconds=Math.floor((distance%(1000*60))/1000);
-
-    document.getElementById("countdown").innerHTML=
-        days+" Days "+hours+" Hours "+minutes+" Min "+seconds+" Sec";
+    const now = new Date().getTime();
+    const d = weddingDate - now;
+    document.getElementById("countdown").innerHTML =
+        Math.floor(d/(1000*60*60*24)) + " Days " +
+        Math.floor((d%(1000*60*60*24))/(1000*60*60)) + " Hours " +
+        Math.floor((d%(1000*60*60))/(1000*60)) + " Min " +
+        Math.floor((d%(1000*60))/1000) + " Sec";
 },1000);
 
 /* Petals */
-for(let i=0;i<20;i++){
-    let petal=document.createElement("div");
-    petal.className="petal";
-    petal.innerHTML="🌸";
-    petal.style.left=Math.random()*100+"vw";
-    petal.style.animationDuration=(5+Math.random()*5)+"s";
-    petal.style.fontSize=(16+Math.random()*14)+"px";
-    document.body.appendChild(petal);
+for(let i=0;i<18;i++){
+    let p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML=Math.random()>0.5?"🌸":"💮";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(6+Math.random()*6)+"s";
+    p.style.fontSize=(18+Math.random()*14)+"px";
+    document.body.appendChild(p);
 }
 </script>
 
