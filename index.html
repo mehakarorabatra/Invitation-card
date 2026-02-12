@@ -80,9 +80,10 @@ h1{
 
 .names{
     font-family:'Dancing Script', cursive;
-    font-size:34px;
+    font-size:30px;
     margin:20px 0;
     color:#6d6875;
+    line-height:1.4;
 }
 
 .divider{
@@ -95,7 +96,7 @@ h1{
     margin:40px 0;
 }
 
-/* Scratch Card */
+/* Tap Reveal Card */
 #scratch-wrapper{
     position:relative;
     width:280px;
@@ -124,8 +125,14 @@ h1{
     inset:0;
     background:linear-gradient(135deg,#cdb4db,#ffc8dd);
     z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:14px;
+    font-weight:600;
     cursor:pointer;
-    touch-action:none;
+    transition:opacity .6s ease, transform .6s ease;
 }
 
 /* Countdown */
@@ -182,21 +189,25 @@ button:hover{ transform:scale(1.05); }
     <h1>Wedding Invitation</h1>
 
     <div class="names">
-        Yashika <br> D/O Mrs. Saroj Khurana & Mr. Rajendra Khurana <br> ❤️ <br> Sarvesh <br> S/O Mrs. Jyotsna Arora & Mr. Mohal Lal Arora <br>
+        Yashika <br>
+        D/O Mrs. Saroj Khurana & Mr. Rajendra Khurana <br>
+        ❤️ <br>
+        Sarvesh <br>
+        S/O Mrs. Jyotsna Arora & Mr. Mohal Lal Arora
     </div>
 
     <div class="divider">❦</div>
 
     <p>Together with their families,<br>invite you to celebrate their forever.</p>
 
-    <!-- Scratch Date -->
+    <!-- Tap Date -->
     <div class="section">
         <h2>🎁 Save the Date</h2>
         <div id="scratch-wrapper">
             <div id="dateText">March 22, 2026</div>
-            <div id="overlay"></div>
+            <div id="overlay">Tap to reveal 💖</div>
         </div>
-        <p style="font-size:14px;color:#777;">Scratch to reveal ✨</p>
+        <p style="font-size:14px;color:#777;">Tap to reveal ✨</p>
     </div>
 
     <!-- Countdown -->
@@ -232,64 +243,30 @@ function openInvite(){
     document.getElementById("music").play();
 }
 
-/* Smooth Scratch Logic */
+/* Tap to Reveal */
 const overlay = document.getElementById("overlay");
-let drawing = false;
-let scratchCount = 0;
-
-overlay.addEventListener("pointerdown", e => {
-    drawing = true;
-    scratch(e);
+overlay.addEventListener("click", () => {
+    overlay.style.opacity = "0";
+    overlay.style.transform = "scale(1.1)";
+    setTimeout(() => overlay.remove(), 600);
 });
-overlay.addEventListener("pointermove", scratch);
-overlay.addEventListener("pointerup", () => drawing = false);
-overlay.addEventListener("pointerleave", () => drawing = false);
-
-function scratch(e){
-    if(!drawing) return;
-
-    const rect = overlay.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const hole = document.createElement("div");
-    hole.style.position = "absolute";
-    hole.style.width = "45px";
-    hole.style.height = "45px";
-    hole.style.borderRadius = "50%";
-    hole.style.left = (x - 22) + "px";
-    hole.style.top = (y - 22) + "px";
-    hole.style.background = "transparent";
-    hole.style.boxShadow = "0 0 0 9999px rgba(0,0,0,0)";
-    hole.style.pointerEvents = "none";
-
-    overlay.appendChild(hole);
-    scratchCount++;
-
-    if(scratchCount > 90){
-        overlay.style.transition = "opacity 0.6s ease";
-        overlay.style.opacity = "0";
-        setTimeout(() => overlay.remove(), 600);
-    }
-}
 
 /* Countdown */
 const weddingDate = new Date("March 22, 2026 00:00:00").getTime();
 setInterval(()=>{
-    const now = new Date().getTime();
-    const d = weddingDate - now;
+    const d = weddingDate - Date.now();
     document.getElementById("countdown").innerHTML =
-        Math.floor(d/(1000*60*60*24)) + " Days " +
-        Math.floor((d%(1000*60*60*24))/(1000*60*60)) + " Hours " +
-        Math.floor((d%(1000*60*60))/(1000*60)) + " Min " +
-        Math.floor((d%(1000*60))/1000) + " Sec";
+        Math.floor(d/86400000) + " Days " +
+        Math.floor(d%86400000/3600000) + " Hours " +
+        Math.floor(d%3600000/60000) + " Min " +
+        Math.floor(d%60000/1000) + " Sec";
 },1000);
 
 /* Petals */
 for(let i=0;i<18;i++){
     let p=document.createElement("div");
     p.className="petal";
-    p.innerHTML=Math.random()>0.5?"🌸":"💮";
+    p.innerHTML=Math.random()>0.5?"🌸":"💮":"❤️";
     p.style.left=Math.random()*100+"vw";
     p.style.animationDuration=(6+Math.random()*6)+"s";
     p.style.fontSize=(18+Math.random()*14)+"px";
@@ -299,4 +276,3 @@ for(let i=0;i<18;i++){
 
 </body>
 </html>
-
