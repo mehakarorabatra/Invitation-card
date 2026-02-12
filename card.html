@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yashika ❤️ Sarvesh | Wedding Invitation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Playfair Display', serif;
+    background:linear-gradient(to bottom,#fff1f5,#fef6e4);
+    text-align:center;
+    overflow-x:hidden;
+}
+
+/* Opening Screen */
+#opening{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom,#f8c8dc,#e0aaff);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+#opening h2{
+    font-family:'Dancing Script', cursive;
+    font-size:38px;
+    color:white;
+}
+
+#opening button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    background:white;
+    color:#b5838d;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+/* Main Content */
+#content{
+    display:none;
+    padding:30px;
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    font-family:'Dancing Script', cursive;
+    font-size:42px;
+    color:#b5838d;
+}
+
+.names{
+    font-size:28px;
+    margin:20px 0;
+    color:#6d6875;
+}
+
+.section{
+    margin:50px 0;
+}
+
+/* Scratch Card */
+#scratch-wrapper{
+    position:relative;
+    width:300px;
+    height:100px;
+    margin:20px auto;
+    border-radius:15px;
+    overflow:hidden;
+    background:#fff;
+    user-select:none;
+}
+
+#dateText{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#b5838d;
+    z-index:1;
+}
+
+#overlay{
+    position:absolute;
+    inset:0;
+    background:#c084fc;
+    z-index:2;
+    cursor:pointer;
+}
+
+/* Countdown */
+#countdown{
+    font-size:18px;
+    color:#6d6875;
+    margin-top:10px;
+}
+
+/* Buttons */
+button{
+    padding:10px 20px;
+    background:#b5838d;
+    color:white;
+    border:none;
+    border-radius:25px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+/* Falling petals */
+.petal{
+    position:fixed;
+    top:-20px;
+    font-size:20px;
+    animation:fall linear infinite;
+    z-index:0;
+}
+
+@keyframes fall{
+    to{ transform:translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Opening -->
+<div id="opening">
+    <h2>💖 Sarvika 💖</h2>
+    <button onclick="openInvite()">Open Invitation 💍</button>
+</div>
+
+<!-- Content -->
+<div id="content">
+
+    <h1>Wedding Invitation</h1>
+
+    <div class="names">
+        Yashika Khurana <br> ❤️ <br> Sarvesh Arora
+    </div>
+
+    <p>Together with their families,<br>invite you to celebrate their forever.</p>
+
+    <!-- Scratch Date -->
+    <div class="section">
+        <h2>🎁 Reveal the Date</h2>
+
+        <div id="scratch-wrapper">
+            <div id="dateText">March 22, 2026</div>
+            <div id="overlay"></div>
+        </div>
+
+        <p style="font-size:14px;color:#777;">Scratch the box to reveal the date ✨</p>
+    </div>
+
+    <!-- Countdown -->
+    <div class="section">
+        <h2>⏳ Countdown</h2>
+        <div id="countdown"></div>
+    </div>
+
+    <!-- Venue -->
+    <div class="section">
+        <h2>📍 Venue</h2>
+        <p>
+            Antilia by Zion<br>
+            National Highway 44<br>
+            Near Rukmani Devi School<br>
+            Sonipat 131001
+        </p>
+        <a href="https://www.google.com/maps/search/?api=1&query=Antilia+by+Zion+Sonipat" target="_blank">
+            <button>View Location</button>
+        </a>
+    </div>
+
+</div>
+
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+
+<script>
+/* Open Invite */
+function openInvite(){
+    document.getElementById("opening").style.display="none";
+    document.getElementById("content").style.display="block";
+    document.getElementById("music").play();
+}
+
+/* Scratch Card */
+const overlay=document.getElementById("overlay");
+let isDrawing=false;
+let scratched=[];
+
+function scratch(e){
+    if(!isDrawing) return;
+    e.preventDefault();
+    const rect=overlay.getBoundingClientRect();
+    const x=(e.clientX || e.touches[0].clientX)-rect.left;
+    const y=(e.clientY || e.touches[0].clientY)-rect.top;
+
+    const dot=document.createElement("div");
+    dot.style.position="absolute";
+    dot.style.width="30px";
+    dot.style.height="30px";
+    dot.style.borderRadius="50%";
+    dot.style.background="transparent";
+    dot.style.left=(x-15)+"px";
+    dot.style.top=(y-15)+"px";
+    dot.style.pointerEvents="none";
+    overlay.appendChild(dot);
+    scratched.push(dot);
+
+    if(scratched.length>60){
+        overlay.remove();
+    }
+}
+
+overlay.addEventListener("mousedown",()=>isDrawing=true);
+overlay.addEventListener("mouseup",()=>isDrawing=false);
+overlay.addEventListener("mouseleave",()=>isDrawing=false);
+overlay.addEventListener("mousemove",scratch);
+
+overlay.addEventListener("touchstart",()=>isDrawing=true);
+overlay.addEventListener("touchend",()=>isDrawing=false);
+overlay.addEventListener("touchmove",scratch);
+
+/* Countdown */
+const weddingDate=new Date("March 22, 2026 00:00:00").getTime();
+
+setInterval(()=>{
+    const now=new Date().getTime();
+    const distance=weddingDate-now;
+
+    const days=Math.floor(distance/(1000*60*60*24));
+    const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds=Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById("countdown").innerHTML=
+        days+" Days "+hours+" Hours "+minutes+" Min "+seconds+" Sec";
+},1000);
+
+/* Petals */
+for(let i=0;i<20;i++){
+    let petal=document.createElement("div");
+    petal.className="petal";
+    petal.innerHTML="🌸";
+    petal.style.left=Math.random()*100+"vw";
+    petal.style.animationDuration=(5+Math.random()*5)+"s";
+    petal.style.fontSize=(16+Math.random()*14)+"px";
+    document.body.appendChild(petal);
+}
+</script>
+
+</body>
+</html>
